@@ -1,0 +1,3 @@
+rootProject.name = 'FacebookSDKDemo'
+
+include ':app'
