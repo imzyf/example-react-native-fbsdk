@@ -12,7 +12,32 @@ import {
   View
 } from 'react-native';
 
+const FBSDK = require('react-native-fbsdk');
+const {
+    LoginManager,
+} = FBSDK;
+
 export default class FacebookSDKDemo extends Component {
+
+  loginFb(){
+      // 防止切换账号后的 Login Faild
+      LoginManager.logOut();
+
+      LoginManager.logInWithReadPermissions(['public_profile']).then(
+          function(result) {
+              if (result.isCancelled) {
+                  alert('Login was cancelled');
+              } else {
+                  alert('Login was successful with permissions: '
+                      + result.grantedPermissions.toString());
+              }
+          },
+          function(error) {
+              alert('Login failed with error: ' + error);
+          }
+      );
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -26,6 +51,13 @@ export default class FacebookSDKDemo extends Component {
           Press Cmd+R to reload,{'\n'}
           Cmd+D or shake for dev menu
         </Text>
+
+        <Text style={styles.welcome}
+          onPress={()=>{
+            this.loginFb()
+          }}
+        >Login FaceBook</Text>
+
       </View>
     );
   }
